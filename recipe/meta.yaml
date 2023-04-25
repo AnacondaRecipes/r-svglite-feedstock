@@ -34,12 +34,12 @@ requirements:
     - {{ posix }}coreutils         # [win]
     - {{ posix }}zip               # [win]
   host:
-    - r-base
+    - r-base {{ r_version }}
     - r-cpp11
     - r-systemfonts >=1.0.0
     - libpng                       # [not win]
   run:
-    - r-base
+    - r-base {{ r_version }}
     - {{ native }}gcc-libs         # [win]
     - r-systemfonts >=1.0.0
 
@@ -63,3 +63,9 @@ extra:
   recipe-maintainers:
     - conda-forge/r
     - sachalau
+  anaconda-services:
+    ref:  https://anaconda.zendesk.com/agent/tickets/35116
+    reason: "needed for r-devtools"
+    recipe-maintainers:
+      - bkreider
+
