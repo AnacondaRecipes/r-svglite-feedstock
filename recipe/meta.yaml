@@ -42,6 +42,8 @@ requirements:
   run:
     - r-base {{ r_version }}
     - {{ native }}gcc-libs         # [win]
+    # bk: not sure why this is needed - doesn't the above req fulfill this?
+    - m2w64-gcc-libs-core          # [win]
     - r-systemfonts >=1.0.0
 
 test:
