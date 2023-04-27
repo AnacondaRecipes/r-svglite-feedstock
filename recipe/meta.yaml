@@ -18,6 +18,8 @@ build:
   rpaths:
     - lib/R/lib/
     - lib/
+  missing_dso_whitelist:
+    - $RPATH/R.dll  # [win]
 
 requirements:
   build:
@@ -25,9 +27,8 @@ requirements:
     - r-cpp11                      # [build_platform != target_platform]
     - r-systemfonts >=1.0.0        # [build_platform != target_platform]
     - {{ compiler('c') }}          # [not win]
-    - {{ compiler('m2w64_c') }}    # [win]
     - {{ compiler('cxx') }}        # [not win]
-    - {{ compiler('m2w64_cxx') }}  # [win]
+    - {{ compiler('m2w64-toolchain') }}  # [win]
     - {{ posix }}filesystem        # [win]
     - {{ posix }}make
     - {{ posix }}sed               # [win]
