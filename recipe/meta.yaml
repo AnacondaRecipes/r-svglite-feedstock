@@ -18,6 +18,8 @@ build:
   rpaths:
     - lib/R/lib/
     - lib/
+  missing_dso_whitelist:
+    - $RPATH/R.dll  # [win]
 
 requirements:
   build:
@@ -25,22 +27,23 @@ requirements:
     - r-cpp11                      # [build_platform != target_platform]
     - r-systemfonts >=1.0.0        # [build_platform != target_platform]
     - {{ compiler('c') }}          # [not win]
-    - {{ compiler('m2w64_c') }}    # [win]
     - {{ compiler('cxx') }}        # [not win]
-    - {{ compiler('m2w64_cxx') }}  # [win]
+    - {{native}}toolchain        # [win]
     - {{ posix }}filesystem        # [win]
     - {{ posix }}make
     - {{ posix }}sed               # [win]
     - {{ posix }}coreutils         # [win]
     - {{ posix }}zip               # [win]
   host:
-    - r-base
+    - r-base {{ r_version }}
     - r-cpp11
     - r-systemfonts >=1.0.0
     - libpng                       # [not win]
   run:
-    - r-base
+    - r-base {{ r_version }}
     - {{ native }}gcc-libs         # [win]
+    # bk: not sure why this is needed - doesn't the above req fulfill this?
+    - m2w64-gcc-libs-core          # [win]
     - r-systemfonts >=1.0.0
 
 test:
@@ -60,6 +63,19 @@ about:
     - {{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3
 
 extra:
-  recipe-maintainers:
-    - conda-forge/r
-    - sachalau
+  skip-lints:
+    # These are needed because of bug: https://github.com/anaconda-distribution/anaconda-linter/issues/197
+    - http_url
+    - invalid_url
+
+    - host_section_needs_exact_pinnings
+    - missing_dev_url
+    - missing_description
+    - missing_documentation
+
+  anaconda-services:
+    ref:  https://anaconda.zendesk.com/agent/tickets/35116
+    reason: "needed for r-devtools"
+    recipe-maintainers:
+      - bkreider
+
