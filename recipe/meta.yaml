@@ -28,7 +28,7 @@ requirements:
     - r-systemfonts >=1.0.0        # [build_platform != target_platform]
     - {{ compiler('c') }}          # [not win]
     - {{ compiler('cxx') }}        # [not win]
-    - {{ compiler('m2w64-toolchain') }}  # [win]
+    - {{native}}toolchain        # [win]
     - {{ posix }}filesystem        # [win]
     - {{ posix }}make
     - {{ posix }}sed               # [win]
@@ -63,9 +63,16 @@ about:
     - {{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3
 
 extra:
-  recipe-maintainers:
-    - conda-forge/r
-    - sachalau
+  skip-lints:
+    # These are needed because of bug: https://github.com/anaconda-distribution/anaconda-linter/issues/197
+    - http_url
+    - invalid_url
+
+    - host_section_needs_exact_pinnings
+    - missing_dev_url
+    - missing_description
+    - missing_documentation
+
   anaconda-services:
     ref:  https://anaconda.zendesk.com/agent/tickets/35116
     reason: "needed for r-devtools"
